@@ -42,7 +42,7 @@ public class JobsApiController {
 
     @GetMapping("/jobs/{id}")
     public JobResponse job(@PathVariable Long id) {
-        return JobResponse.from(findJob(id));
+        return JobResponse.from(findPublishedJob(id));
     }
 
     @PostMapping("/jobs")
@@ -60,7 +60,7 @@ public class JobsApiController {
     @PostMapping("/jobs/{id}/applications")
     public ApplicationResponse apply(@PathVariable Long id, Authentication authentication) {
         PortalUser user = findUser(authentication);
-        Job job = findJob(id);
+        Job job = findPublishedJob(id);
         if (!applications.existsByUserIdAndJobId(user.getId(), job.getId())) {
             applications.save(new JobApplication(user, job));
         }
@@ -83,6 +83,14 @@ public class JobsApiController {
     private Job findJob(Long id) {
         return jobs.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found."));
+    }
+
+    private Job findPublishedJob(Long id) {
+        Job job = findJob(id);
+        if (!job.isPublished()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found.");
+        }
+        return job;
     }
 
     private PortalUser findUser(Authentication authentication) {

@@ -21,6 +21,6 @@ public class Job {
  public String getSalary(){return salary;} public void setSalary(String v){salary=v;}
  public String getDescription(){return description;} public void setDescription(String v){description=v;}
  public LocalDateTime getCreatedAt(){return createdAt;}
- public boolean isPublished(){return Boolean.TRUE.equals(published);}
+ public boolean isPublished(){return !Boolean.FALSE.equals(published);}
  public void setPublished(boolean v){published=v;}
 }

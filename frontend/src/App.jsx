@@ -287,7 +287,7 @@ function App() {
               <article className="detail-card">
                 <div className="company-icon large">{selectedJob.company.charAt(0)}</div>
                 <div className="eyebrow">JOB OPPORTUNITY</div><h1>{selectedJob.title}</h1><p className="detail-company">{selectedJob.company}</p>
-                <div className="job-meta detail-meta"><span>⌖ {selectedJob.location}</span><span>◷ {selectedJob.jobType}</span><span>₹ {selectedJob.salary}</span></div>
+                <div className="job-meta detail-meta"><span>⌖ {selectedJob.location}</span><span>◷ {selectedJob.jobType}</span><span>{selectedJob.salary}</span></div>
                 <hr /><h2>About this role</h2><p className="description">{selectedJob.description}</p>
                 <button className="btn btn-primary" onClick={() => apply(selectedJob)}>{user ? "Apply for this role" : "Log in to apply"} <span>→</span></button>
               </article>
