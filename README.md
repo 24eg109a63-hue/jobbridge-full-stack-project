@@ -92,6 +92,19 @@ APP_FRONTEND_ORIGIN='http://localhost:5173' mvn spring-boot:run
 - `PUT /api/admin/jobs/{id}` — edit a job listing (admin only)
 - `PATCH /api/admin/jobs/{id}/publication` — remove or restore a job listing in public search (admin only)
 
-The backend only serves API responses; the React frontend is built and served independently.
+During local development, the backend serves API responses and the React frontend runs independently.
+
+## Deploy on Railway
+
+The root `Dockerfile` builds the React frontend and serves it from the Spring Boot application, so the UI and API share one HTTPS origin. In Railway, create a project from this GitHub repository and deploy the repository root. Then configure these service settings:
+
+- Add a persistent volume mounted at `/var/data` so the H2 database survives redeploys.
+- Set `SPRING_DATASOURCE_URL` to `jdbc:h2:file:/var/data/jobbridge;AUTO_SERVER=TRUE`.
+- Set `SPRING_DATASOURCE_USERNAME` to `sa`, `SPRING_DATASOURCE_PASSWORD` to an empty value, and `SPRING_DATASOURCE_DRIVER_CLASS_NAME` to `org.h2.Driver`.
+- Set `SPRING_JPA_HIBERNATE_DDL_AUTO` to `update` and `SERVER_SERVLET_SESSION_COOKIE_SECURE` to `true`.
+- Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` to the administrator credentials you want provisioned on first startup. Use a unique password of at least 12 characters; enter it as a Railway secret and do not commit it.
+- Generate a Railway public domain. Railway supplies `PORT` automatically, and the container uses it.
+
+`railway.toml` configures the Docker build and `/api/jobs` health check. The API and frontend use the same origin, so no separate CORS origin or frontend API URL is needed.
 
 This is a student project starter, not a production deployment. Before production, configure HTTPS, managed secrets, rate limiting, email verification, audit logging, backups, and an administrator provisioning process.
