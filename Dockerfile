@@ -3,8 +3,6 @@ WORKDIR /build/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
-ARG VITE_API_URL=/api
-ENV VITE_API_URL=${VITE_API_URL}
 RUN npm run build
 
 FROM maven:3.9.9-eclipse-temurin-17 AS backend-build

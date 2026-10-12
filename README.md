@@ -66,6 +66,8 @@ npm run dev
 
 Open `http://localhost:5173`.
 
+The Vite development server proxies `/api` requests to `http://localhost:8080` by default.
+
 If the API is hosted at a different address, set `VITE_API_URL` before starting Vite, and set `APP_FRONTEND_ORIGIN` for the backend to the frontend's full origin:
 
 ```sh
